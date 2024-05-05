@@ -181,9 +181,32 @@ def process_dc(path, train_ratio=0.9):
                 with open(os.path.join(tp, "lang.txt")) as f:
                     lang = list(f)
                     lang = [l.strip() for l in lang if "confidence" not in l]
+            if "annotations" in ld:
+                lang_lupus_path = os.path.join(tp, "annotations", "lang_lupus.txt")
+                if os.path.exists(lang_lupus_path):
+                    with open(lang_lupus_path) as f:
+                        lang_lupus = list(f)
+                        lang_lupus = [l.strip() for l in lang if "confidence" not in l]
+
+                if os.path.exists(os.path.join(tp, "annotations", "colors.pkl")):
+                    with open(os.path.join(tp, "annotations", "colors.pkl"), "rb") as f:
+                        colors = pickle.load(f)
+                else:
+                    colors = None
+                if os.path.exists(os.path.join(tp, "annotations", "synonyms.pkl")):
+                    with open(os.path.join(tp, "annotations", "synonyms.pkl"), "rb") as f:
+                        synonyms = pickle.load(f)
+                else:
+                    synonyms = None
+                if os.path.exists(os.path.join(tp, "annotations", "objects.pkl")):
+                    with open(os.path.join(tp, "annotations", "objects.pkl"), "rb") as f:
+                        objects = pickle.load(f)
+                else:
+                    objects = None
             else:
                 # empty string is a placeholder for data with no language label
                 lang = [""]
+                lang_lupus = [""]
 
             out["observations"] = obs
             out["observations"]["state"] = state
@@ -204,6 +227,13 @@ def process_dc(path, train_ratio=0.9):
             out["actions"] = acts
             out["terminals"] = term
             out["language"] = lang
+            out["language_lupus"] = lang_lupus
+            out["colors"] = colors
+            out["synonyms"] = synonyms
+            out["objects"] = objects
+
+
+
 
             # shift the actions according to camera latency
             if latency_shift:
