@@ -111,8 +111,8 @@ def process(path):
                         "language": tensor_feature(traj["language"]),
                         "language_lupus": tensor_feature(traj["language_lupus"]),
                         "colors": tensor_feature(traj["colors"]),
-                        synonyms: tensor_feature(traj["synonyms"]),
-                        objects: tensor_feature(traj["objects"]),
+                        "synonyms": tensor_feature(traj["synonyms"]),
+                        "objects": tensor_feature(traj["objects"]),
                         "actions": tensor_feature(
                             np.array(traj["actions"], dtype=np.float32)
                         ),
